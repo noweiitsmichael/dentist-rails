@@ -29,6 +29,7 @@ OD_TABLES_MAPPING = {
         "PatNum" => "patient_uid",
         "DateService" => "service_date",
         "DateSent" => "sent_date",
+        "DateReceived" => "received_date",
         "ClaimStatus" => "status",
         "PlanNum" => "insurance_plan_uid",
         "ClaimFee" => "specified_price",
