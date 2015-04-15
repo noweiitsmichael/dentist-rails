@@ -18,12 +18,14 @@ module OpenDental
 
     def import
       # sequence is important here in order to create the correct relationships
+      puts "Beginning import for Practice(id=#{@practice.id})..." if @verbose
       import_dentists
       import_patients
       import_procedure_types
       import_insurance_plans
       import_claims
       import_procedures
+      puts "Finished import for Practice(id=#{@practice.id})." if @verbose
     end
 
     private
@@ -126,6 +128,30 @@ module OpenDental
     end
 
     def import_claims
+      num_imported = 0
+      od_uids = Set.new(@practice.claims.map(&:od_uid))
+
+      @db.query(build_od_query(:claim)).each do |c|
+        od_data = build_od_data_hash(:claim, c)
+        next if @new_only && od_uids.include?(od_data['uid'].to_s)
+
+        claim = @practice.claims.where(od_uid: od_data['uid']).first_or_create
+        claim.update_attributes({
+          patient:         @practice.patients.where(od_uid: od_data['patient_uid'].to_s).first,
+          insurance_plan:  @practice.insurance_plans.where(od_uid: od_data['insurance_plan_uid'].to_s).first,
+          service_date:    od_data['service_date'],
+          sent_date:       od_data['sent_date'],
+          received_date:   od_data['received_date'],
+          status:          od_data['status'],
+          requested_price: od_data['requested_price'].to_f,
+          payment_price:   od_data['payment_price'].to_f,
+          claim_type:      od_data['type'],
+          open_dental_raw: od_data.to_json
+        })
+        claim.save! rescue next
+        num_imported += 1
+      end
+      puts "Imported #{num_imported} claims." if @verbose
     end
 
     def import_procedures
