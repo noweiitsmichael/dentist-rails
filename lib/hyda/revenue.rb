@@ -4,12 +4,14 @@ module Hyda
       @practice = practice.instance_of?(Practice) ? practice : Practice.find(practice)
     end
 
-    # todo: add payments
     def avg_daily_production(start_datetime, end_datetime)
-      num_days     = (end_datetime.to_date - start_datetime.to_date).to_i
-      total_earned = @practice.claims.received_between(
-                       start_datetime, end_datetime
-                     ).sum(:payment_price)
+      num_days      = (end_datetime.to_date - start_datetime.to_date).to_i
+      total_earned  = @practice.claims.received_between(
+                        start_datetime, end_datetime
+                      ).sum(:payment_price)
+      total_earned += @practice.patient_payments.between(
+                        start_datetime, end_datetime
+                      ).sum(:amount)
       return (total_earned / num_days).round(2)
     end
 

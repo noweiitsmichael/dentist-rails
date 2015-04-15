@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415062446) do
+ActiveRecord::Schema.define(version: 20150415081707) do
 
   create_table "claims", force: :cascade do |t|
     t.string   "od_uid",            limit: 255
@@ -58,6 +58,17 @@ ActiveRecord::Schema.define(version: 20150415062446) do
   end
 
   add_index "insurance_plans", ["practice_id", "od_uid"], name: "index_insurance_plans_on_practice_id_and_od_uid", using: :btree
+
+  create_table "patient_payments", force: :cascade do |t|
+    t.string   "od_uid",          limit: 255
+    t.datetime "date"
+    t.float    "amount",          limit: 24
+    t.integer  "patient_id",      limit: 4
+    t.text     "open_dental_raw", limit: 65535
+    t.integer  "practice_id",     limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
 
   create_table "patients", force: :cascade do |t|
     t.string   "od_uid",           limit: 255
