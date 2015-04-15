@@ -19,13 +19,17 @@ module OpenDental
     def import
       # sequence is important here in order to create the correct relationships
       puts "Beginning import for Practice(id=#{@practice.id})..." if @verbose
+      start_time = Time.now
+
       import_dentists
       import_patients
       import_procedure_types
       import_insurance_plans
       import_claims
       import_procedures
-      puts "Finished import for Practice(id=#{@practice.id})." if @verbose
+  
+      elapsed = (Time.now - start_time).round(2)
+      puts "Finished import for Practice(id=#{@practice.id}) in #{elapsed} seconds." if @verbose
     end
 
     private
@@ -155,6 +159,47 @@ module OpenDental
     end
 
     def import_procedures
+      # procedurelog
+      num_imported = 0
+      od_uids = Set.new(@practice.procedures.map(&:od_uid))
+
+      @db.query(build_od_query(:procedurelog)).each do |p|
+        od_data = build_od_data_hash(:procedurelog, p)
+        next if @new_only && od_uids.include?(od_data['uid'].to_s)
+
+        procedure = @practice.procedures.where(od_uid: od_data['uid']).first_or_create
+        procedure.update_attributes({
+          patient:         @practice.patients.where(od_uid: od_data['patient_uid'].to_s).first,
+          procedure_type:  @practice.procedure_types.where(od_uid: od_data['procedure_type_uid'].to_s).first,
+          dentist:         @practice.dentists.where(od_uid: od_data['dentist_uid'].to_s).first,
+          date:            od_data['date'],
+          price:           od_data['price'].to_f,
+          status:          od_data['status'],
+          open_dental_raw: od_data.to_json
+        })
+        procedure.save! rescue next
+        num_imported += 1
+      end
+      puts "Imported #{num_imported} procedures." if @verbose
+
+      # claimproc
+      num_updated = 0
+
+      @db.query(build_od_query(:claimproc)).each do |p|
+        od_data = build_od_data_hash(:claimproc, p)
+
+        procedure = @practice.procedures.where(od_uid: od_data['uid']).first_or_create
+        next if @new_only && procedure.claim_id.present?
+
+        proc_od_data = JSON.parse(procedure.open_dental_raw) rescue {}
+        procedure.update_attributes({
+          claim:           @practice.claims.where(od_uid: od_data['claim_uid'].to_s).first,
+          open_dental_raw: od_data.merge(proc_od_data).to_json
+        })
+        procedure.save! rescue next
+        num_updated += 1
+      end
+      puts "Updated #{num_updated} claim-procedure relationships." if @verbose
     end
   end
 end

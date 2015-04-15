@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415054029) do
+ActiveRecord::Schema.define(version: 20150415062446) do
 
   create_table "claims", force: :cascade do |t|
     t.string   "od_uid",            limit: 255
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(version: 20150415054029) do
     t.datetime "updated_at",                      null: false
   end
 
+  add_index "claims", ["practice_id", "od_uid"], name: "index_claims_on_practice_id_and_od_uid", using: :btree
+
   create_table "dentists", force: :cascade do |t|
     t.string   "od_uid",          limit: 255
     t.string   "first_name",      limit: 255
@@ -40,6 +42,8 @@ ActiveRecord::Schema.define(version: 20150415054029) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
   end
+
+  add_index "dentists", ["practice_id", "od_uid"], name: "index_dentists_on_practice_id_and_od_uid", using: :btree
 
   create_table "insurance_plans", force: :cascade do |t|
     t.string   "od_uid",          limit: 255
@@ -53,6 +57,8 @@ ActiveRecord::Schema.define(version: 20150415054029) do
     t.text     "description",     limit: 65535
   end
 
+  add_index "insurance_plans", ["practice_id", "od_uid"], name: "index_insurance_plans_on_practice_id_and_od_uid", using: :btree
+
   create_table "patients", force: :cascade do |t|
     t.string   "od_uid",           limit: 255
     t.integer  "zipcode",          limit: 4
@@ -63,6 +69,8 @@ ActiveRecord::Schema.define(version: 20150415054029) do
     t.datetime "updated_at",                     null: false
     t.datetime "first_visit_date"
   end
+
+  add_index "patients", ["practice_id", "od_uid"], name: "index_patients_on_practice_id_and_od_uid", using: :btree
 
   create_table "practices", force: :cascade do |t|
     t.integer  "user_id",     limit: 4
@@ -86,6 +94,8 @@ ActiveRecord::Schema.define(version: 20150415054029) do
     t.datetime "updated_at",                    null: false
   end
 
+  add_index "procedure_types", ["practice_id", "od_uid"], name: "index_procedure_types_on_practice_id_and_od_uid", using: :btree
+
   create_table "procedures", force: :cascade do |t|
     t.string   "od_uid",            limit: 255
     t.integer  "patient_id",        limit: 4
@@ -101,6 +111,8 @@ ActiveRecord::Schema.define(version: 20150415054029) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
   end
+
+  add_index "procedures", ["practice_id", "od_uid"], name: "index_procedures_on_practice_id_and_od_uid", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",      limit: 255

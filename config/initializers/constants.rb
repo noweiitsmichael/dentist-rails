@@ -43,7 +43,6 @@ OD_TABLES_MAPPING = {
       :field_mapping => {
         "ProcNum" => "uid",
         "ClaimNum" => "claim_uid",
-        "Status" => "status",
         "BaseEst" => "base_estimated_price",
         "InsEstTotal" => "insurance_estimated_price"
       }
