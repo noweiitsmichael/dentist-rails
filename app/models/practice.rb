@@ -3,6 +3,7 @@ class Practice < ActiveRecord::Base
   has_many :dentists
   has_many :patients
   has_many :procedures
+  has_many :procedure_types
   has_many :claims
   has_many :insurance_plans
 end
