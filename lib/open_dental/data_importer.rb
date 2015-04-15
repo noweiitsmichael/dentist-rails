@@ -3,10 +3,10 @@ module OpenDental
     def initialize(practice_id)
       # use hardcoded db location for now
       # pull out all the db info from practice record
-      hostname = "104.131.57.60"
+      hostname = "45.55.171.27"
       username = "root"
       port     = 3306
-      password = "ARRJDS1pur"
+      password = "0kYYELlxbY"
       database = "dentaldb" # will be computed and generated
       @db      = Mysql2::Client.new(
                    :host => hostname,
