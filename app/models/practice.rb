@@ -6,6 +6,4 @@ class Practice < ActiveRecord::Base
   has_many :procedure_types
   has_many :claims
   has_many :insurance_plans
-
-  validates_uniqueness_of :od_uid, :scope => :practice_id
 end
