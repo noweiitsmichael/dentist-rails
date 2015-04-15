@@ -51,15 +51,15 @@ module OpenDental
 
         dentist = @practice.dentists.where(od_uid: od_data['uid']).first_or_create
         dentist.update_attributes({
-          first_name: od_data['first_name'],
-          last_name: od_data['last_name'],
-          suffix: od_data['suffix'],
+          first_name:      od_data['first_name'],
+          last_name:       od_data['last_name'],
+          suffix:          od_data['suffix'],
           open_dental_raw: od_data.to_json
         })
         dentist.save! rescue next
         num_imported += 1
       end
-      pp "Imported #{num_imported} dentists." if @verbose
+      puts "Imported #{num_imported} dentists." if @verbose
     end
 
     def import_patients
@@ -72,15 +72,15 @@ module OpenDental
 
         patient = @practice.patients.where(od_uid: od_data['uid']).first_or_create
         patient.update_attributes({
-          zipcode: od_data['zipcode'],
-          gender: od_data['gender'],
+          zipcode:          od_data['zipcode'],
+          gender:           od_data['gender'],
           first_visit_date: od_data['first_visit_date'],
-          open_dental_raw: od_data.to_json
+          open_dental_raw:  od_data.to_json
         })
         patient.save! rescue next
         num_imported += 1
       end
-      pp "Imported #{num_imported} patients." if @verbose
+      puts "Imported #{num_imported} patients." if @verbose
     end
 
     def import_procedure_types
@@ -93,17 +93,36 @@ module OpenDental
 
         proc_type = @practice.procedure_types.where(od_uid: od_data['uid']).first_or_create
         proc_type.update_attributes({
-          code: od_data['code'],
-          description: od_data['description'],
+          code:            od_data['code'],
+          description:     od_data['description'],
           open_dental_raw: od_data.to_json
         })
         proc_type.save! rescue next
         num_imported += 1
       end
-      pp "Imported #{num_imported} procedure types." if @verbose
+      puts "Imported #{num_imported} procedure types." if @verbose
     end
 
     def import_insurance_plans
+      num_imported = 0
+      od_uids = Set.new(@practice.insurance_plans.map(&:od_uid))
+
+      @db.query(build_od_query(:insplan)).each do |i|
+        od_data = build_od_data_hash(:insplan, i)
+        next if @new_only && od_uids.include?(od_data['uid'].to_s)
+
+        ins_plan = @practice.insurance_plans.where(od_uid: od_data['uid']).first_or_create
+        ins_plan.update_attributes({
+          group_name:      od_data['group_name'],
+          group_id:        od_data['group_uid'],
+          description:     od_data['description'],
+          carrier_id:      od_data['carrier_uid'],
+          open_dental_raw: od_data.to_json
+        })
+        ins_plan.save! rescue next
+        num_imported += 1
+      end
+      puts "Imported #{num_imported} insurance plans." if @verbose
     end
 
     def import_claims

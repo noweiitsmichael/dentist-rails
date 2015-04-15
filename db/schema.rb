@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415051904) do
+ActiveRecord::Schema.define(version: 20150415054029) do
 
   create_table "claims", force: :cascade do |t|
     t.string   "od_uid",            limit: 255
@@ -44,13 +44,13 @@ ActiveRecord::Schema.define(version: 20150415051904) do
   create_table "insurance_plans", force: :cascade do |t|
     t.string   "od_uid",          limit: 255
     t.string   "group_name",      limit: 255
-    t.integer  "group_id",        limit: 4
-    t.string   "description",     limit: 255
     t.integer  "carrier_id",      limit: 4
     t.text     "open_dental_raw", limit: 65535
     t.integer  "practice_id",     limit: 4
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.string   "group_id",        limit: 255
+    t.text     "description",     limit: 65535
   end
 
   create_table "patients", force: :cascade do |t|
