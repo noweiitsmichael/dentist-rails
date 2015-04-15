@@ -6,4 +6,5 @@ class Practice < ActiveRecord::Base
   has_many :procedure_types
   has_many :claims
   has_many :insurance_plans
+  has_many :patient_payments
 end

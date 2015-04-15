@@ -77,4 +77,13 @@ OD_TABLES_MAPPING = {
         "DateFirstVisit" => "first_visit_date"
       }
     },
+  :payment => {
+      :model_name => 'PatientPayments',
+      :field_mapping => {
+        "PayNum" => "uid",
+        "PayDate" => "date",
+        "PayAmt" => "amount",
+        "PatNum" => "patient_uid"
+      }
+    }
 }

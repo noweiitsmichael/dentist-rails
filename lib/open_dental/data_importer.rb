@@ -27,6 +27,7 @@ module OpenDental
       import_insurance_plans
       import_claims
       import_procedures
+      import_payments
   
       elapsed = (Time.now - start_time).round(2)
       puts "Finished import for Practice(id=#{@practice.id}) in #{elapsed} seconds." if @verbose
@@ -200,6 +201,27 @@ module OpenDental
         num_updated += 1
       end
       puts "Updated #{num_updated} claim-procedure relationships." if @verbose
+    end
+
+    def import_payments
+      num_imported = 0
+      od_uids = Set.new(@practice.patient_payments.map(&:od_uid))
+
+      @db.query(build_od_query(:payment)).each do |p|
+        od_data = build_od_data_hash(:payment, p)
+        next if @new_only && od_uids.include?(od_data['uid'].to_s)
+
+        payment = @practice.patient_payments.where(od_uid: od_data['uid']).first_or_create
+        payment.update_attributes({
+          patient:         @practice.patients.where(od_uid: od_data['patient_uid'].to_s).first,
+          date:            od_data['date'],
+          amount:          od_data['amount'].to_f,
+          open_dental_raw: od_data.to_json
+        })
+        payment.save! rescue next
+        num_imported += 1
+      end
+      puts "Imported #{num_imported} patient payments." if @verbose
     end
   end
 end
