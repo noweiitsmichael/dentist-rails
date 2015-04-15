@@ -19,6 +19,6 @@ class Patient < ActiveRecord::Base
     new_since((DateTime.now - 1.month).beginning_of_day)
   }
   scope :new_between, lambda { |start_date, end_date|
-    where(:first_visit_date => start_date.beginning_of_day..end_date.end_of_day) 
+    where(:first_visit_date => start_date..end_date) 
   }
 end
