@@ -75,7 +75,7 @@ OD_TABLES_MAPPING = {
         "PatNum" => "uid",
         "Zip" => "zipcode",
         "Gender" => "gender",
-        "DateFirstVisit" => "first_visit"
+        "DateFirstVisit" => "first_visit_date"
       }
     },
 }

@@ -1,11 +1,9 @@
 module OpenDental
   class DataImporter
-    def initialize(practice)
-      if practice.instance_of? Practice
-        @practice = practice
-      else
-        @practice = Practice.find(practice)
-      end
+    def initialize(practice, options)
+      @practice = practice.instance_of?(Practice) ? practice : Practice.find(practice)
+      
+      @verbose = options[:verbose]
 
       database = "dentaldb" # TODO: will be computed and generated
       @db      = Mysql2::Client.new(
@@ -43,6 +41,7 @@ module OpenDental
     end
 
     def import_dentists
+      num_imported = 0
       @db.query(build_od_query(:provider)).each do |d|
         od_data = build_od_data_hash(:provider, d)
         dentist = @practice.dentists.where(od_uid: od_data['uid']).first_or_create
@@ -53,10 +52,26 @@ module OpenDental
           open_dental_raw: od_data.to_json
         })
         dentist.save! rescue next
+        num_imported += 1
       end
+      pp "Imported #{num_imported} dentists." if @verbose
     end
 
     def import_patients
+      num_imported = 0
+      @db.query(build_od_query(:patient)).each do |p|
+        od_data = build_od_data_hash(:patient, p)
+        patient = @practice.patients.where(od_uid: od_data['uid']).first_or_create
+        patient.update_attributes({
+          zipcode: od_data['zipcode'],
+          gender: od_data['gender'],
+          first_visit_date: od_data['first_visit_date'],
+          open_dental_raw: od_data.to_json
+        })
+        patient.save! rescue next
+        num_imported += 1
+      end
+      pp "Imported #{num_imported} patients." if @verbose
     end
 
     def import_procedure_types
