@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413003226) do
+ActiveRecord::Schema.define(version: 20150415043100) do
 
   create_table "claims", force: :cascade do |t|
     t.string   "od_uid",            limit: 255
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(version: 20150413003226) do
     t.string   "secret_key",  limit: 255
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "db_port",     limit: 4
+    t.string   "db_host",     limit: 255
   end
 
   create_table "procedure_types", force: :cascade do |t|

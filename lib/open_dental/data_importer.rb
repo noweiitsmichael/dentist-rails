@@ -1,19 +1,17 @@
 module OpenDental
   class DataImporter
-    def initialize(practice_id)
-      # use hardcoded db location for now
-      # pull out all the db info from practice record
-      hostname = "45.55.171.27"
-      username = "root"
-      port     = 3306
-      password = "0kYYELlxbY"
-      database = "dentaldb" # will be computed and generated
+    def initialize(practice)
+      if !practice.instance_of? Practice
+        practice = Practice.find(practice)
+      end
+
+      database = "dentaldb" # TODO: will be computed and generated
       @db      = Mysql2::Client.new(
-                   :host => hostname,
-                   :port => port,
-                   :username => username,
-                   :password => password,
-                   :database => database,
+                   :host => practice.db_host,
+                   :port => practice.db_port,
+                   :username => practice.db_username,
+                   :password => practice.db_password,
+                   :database => database
                  )
     end
 

@@ -44,7 +44,6 @@ OD_TABLES_MAPPING = {
         "ProcNum" => "uid",
         "ClaimNum" => "claim_uid",
         "Status" => "status",
-        "PlanNum" => "insurance_plan_uid",
         "BaseEst" => "base_estimated_price",
         "InsEstTotal" => "insurance_estimated_price"
       }
@@ -75,7 +74,8 @@ OD_TABLES_MAPPING = {
       :field_mapping => {
         "PatNum" => "uid",
         "Zip" => "zipcode",
-        "Gender" => "gender"
+        "Gender" => "gender",
+        "DateFirstVisit" => "first_visit"
       }
     },
 }
