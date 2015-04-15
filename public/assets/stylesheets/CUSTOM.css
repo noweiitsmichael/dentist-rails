@@ -1,0 +1,20 @@
+.recommendations-day-selector .widget-stats {
+  text-align: center;
+  cursor: pointer;
+}
+
+.recommendations-day-selector .widget-stats:hover{
+  opacity:.7;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0; 
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid #2d353c;
+  left: 40%;
+  position: absolute;
+  margin-top: -25px;
+  display:none;
+}
