@@ -12,5 +12,17 @@ class Claim < ActiveRecord::Base
 
   scope :received_between, lambda { |start_date, end_date|
     where(:received_date => start_date..end_date) 
-  } 
+  }
+
+  scope :paid_between, lambda { |start_date, end_date|
+    where(:sent_date => start_date..end_date)
+      .where("payment_price > ?", 0.0)
+  }
+
+  scope :unpaid_between, lambda { |start_date, end_date|
+    where(
+      :sent_date => start_date..end_date,
+      :payment_price => 0.0
+    )
+  }
 end
