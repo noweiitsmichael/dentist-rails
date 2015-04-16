@@ -8,9 +8,6 @@ class PracticesController < ApplicationController
 
   def index
     @rev = Hyda::Revenue.new(@practice)
-    @appointments = []
-    @dentists = []
-    @production = []
 
     load_summary_metrics
     load_day_to_day
@@ -30,23 +27,23 @@ class PracticesController < ApplicationController
   def load_summary_metrics
     @est_prod_this_mo = @rev.production_per(1.month, 1, DateTime.now.beginning_of_month)[0][:total_price]
     @avg_rev_this_mo = @rev.avg_daily_revenue(DateTime.now.beginning_of_month, DateTime.now)
-    @avg_ins_ratio_this_mo = @rev.insurance_collection_ratio(DateTime.now.beginning_of_month, DateTime.now)
+    @avg_ins_ratio_this_mo = @rev.insurance_collection_ratio(DateTime.now - 90.days, DateTime.now)
     @new_patients_this_mo = @practice.patients.new_since(DateTime.now.beginning_of_month).count
   end
 
   def load_day_to_day
     ## TODO: change to 7 if we update to 7 days
     ## TODO: Start at beginning of week (Monday)
-    6.times do |i| 
-      @appointments[i] = Procedure.where(:date => (Date.today + i.days)).includes(:dentist)
-    end
+    @day_to_day = []
+    6.times do |i|
+      date = Date.today.beginning_of_week + i.days
+      procs = Procedure.where(:date => (date)).includes(:dentist)
 
-    6.times do |i| 
-      @dentists[i] = @appointments[i].collect { |j| j["dentist_id"] }.uniq
-    end
-
-    6.times do |i| 
-      @production[i] = number_to_currency(@appointments[i].collect { |e| e["price"] }.reduce :+) || "$0.00"
+      @day_to_day.push({
+        :date => date,
+        :procs => procs,
+        :dentists => procs.map(&:dentist).uniq
+      })
     end
   end
 

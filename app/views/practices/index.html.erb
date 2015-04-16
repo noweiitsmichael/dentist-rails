@@ -5,7 +5,7 @@
   <li class="active">Dashboard v2</li>
 </ol> -->
 
-<ol class="breadcrumb pull-right">
+<ol class="date-range breadcrumb pull-right">
   <li><a href="javascript:;">Last Month</a></li>
   <li><a href="javascript:;">Last Week</a></li>
   <li><a href="javascript:;">This Week</a></li>
@@ -13,7 +13,7 @@
 </ol>
 
 <!-- begin page-header -->
-<h1 class="page-header">Dashboard v2 <small>This Month</small></h1>
+<h1 class="page-header">The Dentists At Creekside - Dashboard <small>This Month</small></h1>
 <!-- end page-header -->
 <div class="row">
   <div class="col-md-3 col-sm-6">
@@ -62,93 +62,6 @@
   </div>
 </div>
 
-<h1 class="page-header">Daily Status</h1>
-<div class="row recommendations-day-selector">
-  <% 6.times do |i| %>
-  <div class="col-md-2 col-sm-4">
-    <div class="widget widget-stats bg-black recommendations-day" day="<%= i %>">
-      <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
-      <div class="stats-title"><%= (Time.now + i.days).strftime("%B %e") %></div>
-      <% if i == 0 %>
-      <div class="stats-number">TODAY</div>
-      <% else %>
-      <div class="stats-number"><%= (Time.now + i.days).strftime("%A") %></div>
-      <% end %>
-    </div>
-
-    <% if i == 0 %>
-    <div style="position:relative"><div style="display:block" class="arrow-down"></div></div>
-    <% else %>
-    <div style="position:relative"><div class="arrow-down"></div></div>
-    <% end %>
-  </div>
-  <% end %>
-</div>
-
-<% 6.times do |i| %>
-  <% if i == 0 %>
-  <div class="row rec-panel rec-<%= i %>">
-  <% else %>
-  <div class="row rec-panel rec-<%= i %>" style="display:none">
-  <% end %>
-
-    <div class="col-md-12 col-sm-12">
-      <div class="widget-chart with-sidebar bg-black">
-        <div class="widget-chart-content recs">
-          <h3>Snapshot</h3>
-          <div class="metric">
-            <div class="metric-label">Appointments</div>
-            <div class="metric-value">
-              <%= @appointments[i].count %>
-            </div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Active Doctors</div>
-            <div class="metric-value">
-              <%= @dentists[i].count%>
-            </div>
-            <ul>
-              <% @dentists[i].each do |d| %>
-              <% dent = Dentist.find(d); %>
-              <li>Dr. <%= dent.first_name %> <%= dent.last_name %></li>
-              <% end %>
-            </ul>
-          </div>
-          <div class="metric pos-dollar">
-            <div class="metric-label">Projected Production</div>
-            <div class="metric-value">
-              <%= @production[i] %>
-            </div>
-          </div>
-        </div>
-
-        <div class="widget-chart-sidebar bg-black-darker recs rec-actions">
-          <h3>Recommended Actions</h3>
-          <!-- <small>Based on existing appointments and staff</small> -->
-          <fieldset>
-            <div class="recommendation">
-              <input type="checkbox" name="option1" value="40" checked>
-              <span>Move 1:00pm appointment to 2:00pm</span>
-              <div class="recommendation-impact">Impact: Schedule 1 less dental assistant</div>
-            </div>
-            <div class="recommendation">
-              <input type="checkbox" name="option3" value="600" checked>
-              <span>Close office at 4:00pm</span>
-            </div>
-
-            <div class="metric pos-dollar">
-              <div class="metric-label">Revenue Improvement</div>
-              <div class="metric-value">
-                $<span class="improvement-amount">640.00</span>
-              </div>
-            </div>
-          </fieldset>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
-
 <h1 class="page-header">Historical Analysis &amp; Projections</h1>
 
 <div class="row charts-container">
@@ -187,6 +100,96 @@
     </div>
   </div>
 </div>
+
+<h1 class="page-header">Daily Status</h1>
+
+<div class="row recommendations-day-selector">
+  <% @day_to_day.each_with_index do |day, i| %>
+    <div class="col-md-2 col-sm-4">
+      <div class="widget widget-stats bg-black recommendations-day" day="<%= i %>">
+        <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
+        <div class="stats-title"><%= day[:date] %></div>
+        <div class="stats-number">
+          <%= day[:date] == Date.today ? "TODAY" : day[:date].strftime("%^a") %>
+        </div>
+      </div>
+
+      <% if day[:date] == Date.today %>
+        <div style="position:relative">
+          <div class="arrow-down" style="display:block"></div>
+        </div>
+      <% else %>
+        <div style="position:relative">
+          <div class="arrow-down"></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<% @day_to_day.each_with_index do |day, i| %>
+  <% if day[:date] == Date.today %>
+    <div class="row rec-panel rec-<%= i %>">
+  <% else %>
+    <div class="row rec-panel rec-<%= i %>" style="display:none">
+  <% end %>
+
+  <div class="col-md-12 col-sm-12">
+    <div class="widget-chart with-sidebar bg-black">
+      <div class="widget-chart-content recs">
+        <h3>Snapshot</h3>
+        <div class="metric">
+          <div class="metric-label">Procedures</div>
+          <div class="metric-value">
+            <%= day[:procs].count %>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Active Doctors</div>
+          <div class="metric-value">
+            <%= day[:dentists].count%>
+          </div>
+          <ul>
+            <% day[:dentists].each do |dentist| %>
+              <li>Dr. <%= dentist.first_name %> <%= dentist.last_name %></li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="metric pos-dollar">
+          <div class="metric-label">Projected Production</div>
+          <div class="metric-value">
+            <%= number_to_currency(day[:procs].to_a.sum(&:price)) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget-chart-sidebar bg-black-darker recs rec-actions">
+        <h3>Recommended Actions</h3>
+        <!-- <small>Based on existing appointments and staff</small> -->
+        <fieldset>
+          <div class="recommendation">
+            <input type="checkbox" name="option1" value="40" checked>
+            <span>Move 1:00pm appointment to 2:00pm</span>
+            <div class="recommendation-impact">Impact: Schedule 1 less dental assistant</div>
+          </div>
+          <div class="recommendation">
+            <input type="checkbox" name="option3" value="600" checked>
+            <span>Close office at 4:00pm</span>
+          </div>
+
+          <div class="metric pos-dollar">
+            <div class="metric-label">Revenue Improvement</div>
+            <div class="metric-value">
+              $<span class="improvement-amount">640.00</span>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    </div>
+  </div>
+<% end %>
+
 
 <!--div class="row">
   <div class="col-md-4">

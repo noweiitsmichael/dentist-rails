@@ -18,8 +18,8 @@ module PracticesHelper
     end
   end
 
-  def float_to_percent(price)
-    price_to_s = '%.1f' % price
+  def float_to_percent(number)
+    price_to_s = '%.1f' % (number*100)
     "#{price_to_s}%"
   end
 end
