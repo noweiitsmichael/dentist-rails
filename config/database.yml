@@ -49,7 +49,7 @@ test:
 #
 production:
   <<: *default
-  database: dentaldb
+  database: dentists_production
   username: root
   password: 0kYYELlxbY
   # database: dentists_production
