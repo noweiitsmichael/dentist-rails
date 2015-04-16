@@ -4,6 +4,7 @@ class PracticesController < ApplicationController
   include ActionView::Helpers::NumberHelper
 
   def index
+    @revenue_data = Hyda::Revenue.new(1)
     @appointments = []
     @dentists = []
     @production = []
@@ -21,6 +22,8 @@ class PracticesController < ApplicationController
     6.times do |i| 
       @production[i] = number_to_currency(@appointments[i].collect { |e| e["price"] }.reduce :+) || "$0.00"
     end
+
+
 
     # charts
 

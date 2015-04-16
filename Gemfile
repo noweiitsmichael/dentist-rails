@@ -10,6 +10,7 @@ gem 'turbolinks'
 gem 'bcrypt', '~> 3.1.7'
 gem 'paloma'
 
+gem 'rails_12factor'
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
