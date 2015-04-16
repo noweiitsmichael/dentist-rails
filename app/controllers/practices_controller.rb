@@ -1,5 +1,3 @@
-require "time"
-
 class PracticesController < ApplicationController
   include ActionView::Helpers::NumberHelper
   include PracticesHelper
