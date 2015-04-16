@@ -3,7 +3,7 @@ $(function() {
   $(".recommendations-day").click( function() {
     $(".arrow-down").hide();
     $(this).siblings().children().show();
-    $(".rec-panel").animate({opacity: 0}, 300).hide();
+    $(".rec-panel").animate({opacity: 0}, 300).delay(100).hide();
     $(".rec-" + $(this).attr("day")).animate({opacity: 1}, 300).show();
   });
 
