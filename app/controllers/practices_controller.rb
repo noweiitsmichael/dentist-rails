@@ -20,6 +20,9 @@ class PracticesController < ApplicationController
     6.times do |i| 
       @production[i] = @appointments[i].collect { |e| e["price"] }.reduce :+
     end
-  end
 
+    # charts
+
+
+  end
 end
