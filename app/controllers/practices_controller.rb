@@ -21,6 +21,9 @@ class PracticesController < ApplicationController
     6.times do |i| 
       @production[i] = number_to_currency(@appointments[i].collect { |e| e["price"] }.reduce :+) || "$0.00"
     end
-  end
 
+    # charts
+
+
+  end
 end
