@@ -1,5 +1,4 @@
 require "Time"
-require "pp"
 
 class PracticesController < ApplicationController
 
@@ -8,6 +7,8 @@ class PracticesController < ApplicationController
     @dentists = []
     @production = []
 
+    ## TODO: change to 7 if we update to 7 days
+    ## TODO: Start at beginning of week (Monday)
     6.times do |i| 
       @appointments[i] = Procedure.where(:date => (Date.today + i.days)).includes(:dentist)
     end

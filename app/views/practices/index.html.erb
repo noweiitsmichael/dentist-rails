@@ -102,33 +102,48 @@
           <div class="col-md-12 col-sm-12">
               <!-- begin panel -->
               <div class="widget-chart with-sidebar bg-black">
-                  <div class="widget-chart-content">
-                      <h4 class="chart-title">
-                          Scheduled Staff
-                          <div>
-                            <small>Based on currently scheduled appointments (<%= @appointments[i].count %>)</small>
-                          </div>
-                          
-                          <div style="margin-top:10px">
-                            Doctors Scheduled Today - <%= @dentists[i].count%>
-                          </div>
-                          <ul>
-                            <% @dentists[i].each do |d| %>
-                              <% dent = Dentist.find(d); %>
-                              <li><%= dent.first_name %> <%= dent.last_name %></li>
-                            <% end %>
-                          </ul>
-                          <div> Projected Production: $<%= @production[i] %></div>
-                      </h4>
-                      <div id="visitors-line-chart" class="morris-inverse" style="height: 260px;"></div>
+                <div class="widget-chart-content recs">
+                  <h3>Snapshot</h3>
+                  <div class="metric">
+                    <div class="metric-label">Appointments</div>
+                    <div class="metric-value">
+                      <%= @appointments[i].count %>
+                    </div>
                   </div>
-                  <div class="widget-chart-sidebar bg-black-darker">
-                      <div class="chart-number">
-                          Recommended Actions
-                          <small>Optimizations</small>
-                      </div>
+                  <div class="metric">
+                    <div class="metric-label">Active Doctors</div>
+                    <div class="metric-value">
+                      <%= @dentists[i].count%>
+                    </div>
+                    <ul>
+                      <% @dentists[i].each do |d| %>
+                        <% dent = Dentist.find(d); %>
+                        <li>Dr. <%= dent.first_name %> <%= dent.last_name %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                  <div class="metric pos-dollar">
+                    <div class="metric-label">Projected Production</div>
+                    <div class="metric-value">
+                      $<%= @production[i] %>
+                    </div>
+                  </div>
+                </div>
 
+                <div class="widget-chart-sidebar bg-black-darker recs">
+                  <h3>Recommended Actions</h3>
+                  <!-- <small>Based on existing appointments and staff</small> -->
+                  <div class="recommendation">
+                    <input type="checkbox" name="option1" value="60">
+                      <span>Move 1:00pm appointment to 2:00pm</span>
+                      <div class="recommendation-impact">Impact: Schedule 1 less dental assistant</div>
                   </div>
+
+                  <div class="recommendation">
+                    <input type="checkbox" name="option3" value="600">
+                      <span>Close office at 4:00pm</span>
+                  </div>
+                </div>
               </div>
               <!-- end panel -->
           </div>

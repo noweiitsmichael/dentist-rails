@@ -203,7 +203,78 @@ label {
     color: #242a30;
 }
 
+.widget-chart .widget-chart-content.recs{
+    width: 50%;
+}
 
+.widget-chart .widget-chart-sidebar.recs{
+    width: 50%;
+}
+
+
+.recs h3 {
+  font-size: 24px;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 20px;
+  margin-top: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #555;
+}
+
+.recs .metric {
+    min-height: 55px;
+    margin-bottom: 15px;
+}
+
+.recs .metric-label, .recommendation-impact {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #aaa;
+    font-weight:300;
+}
+
+.recs .metric-value {
+/*    float: left;
+    width: 40px;*/
+    font-size: 28px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight:500;
+}
+
+.recs .metric ul {
+    margin-top: 5px;
+    padding: 0px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #ddd;
+    font-weight:300;
+}
+.recs .metric li {
+    list-style-type: none;
+}
+
+.recs .metric.pos-dollar {
+    text-align:right;
+}
+
+.recs .metric.pos-dollar .metric-value {
+    font-size: 24px;
+    text-transform: uppercase;
+    color: rgb(0, 205, 11);
+    text-align:right;
+}
+
+.recs .recommendation {
+    margin: 10px 0px 10px 5px;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #ccc;
+}
+.recs .recommendation-impact {
+    margin: 6px 0px 0px 18px;
+}
 /* -------------------------------
    2.0 Page Structure Settings
 ------------------------------- */
