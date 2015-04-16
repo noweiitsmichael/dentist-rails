@@ -1,6 +1,7 @@
 require "Time"
 
 class PracticesController < ApplicationController
+  include ActionView::Helpers::NumberHelper
 
   def index
     @appointments = []
@@ -18,7 +19,7 @@ class PracticesController < ApplicationController
     end
 
     6.times do |i| 
-      @production[i] = @appointments[i].collect { |e| e["price"] }.reduce :+
+      @production[i] = number_to_currency(@appointments[i].collect { |e| e["price"] }.reduce :+) || "$0.00"
     end
   end
 

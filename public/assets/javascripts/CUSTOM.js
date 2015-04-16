@@ -8,4 +8,6 @@ $(function() {
     $(".rec-panel").slideUp("fast").delay( 300 );
     $(".rec-" + $(this).attr("day")).slideDown("fast");
   });
+
+
 });

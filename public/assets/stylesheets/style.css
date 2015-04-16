@@ -260,10 +260,11 @@ label {
 }
 
 .recs .metric.pos-dollar .metric-value {
-    font-size: 24px;
+    font-size: 48px;
     text-transform: uppercase;
-    color: rgb(0, 205, 11);
+    color: white;
     text-align:right;
+    font-weight:300;
 }
 
 .recs .recommendation {
@@ -274,6 +275,12 @@ label {
 }
 .recs .recommendation-impact {
     margin: 6px 0px 0px 18px;
+}
+
+.rec-actions .metric.pos-dollar{
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
 }
 /* -------------------------------
    2.0 Page Structure Settings

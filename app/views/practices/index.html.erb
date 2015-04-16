@@ -1,9 +1,9 @@
 
-<ol class="breadcrumb pull-right">
+<!-- <ol class="breadcrumb pull-right">
   <li><a href="javascript:;">Home</a></li>
   <li><a href="javascript:;">Dashboard</a></li>
   <li class="active">Dashboard v2</li>
-</ol>
+</ol> -->
 
 <!-- begin page-header -->
 <h1 class="page-header">Dashboard v2 <small>At a glance...</small></h1>
@@ -110,24 +110,32 @@
           <div class="metric pos-dollar">
             <div class="metric-label">Projected Production</div>
             <div class="metric-value">
-              $<%= @production[i] %>
+              <%= @production[i] %>
             </div>
           </div>
         </div>
 
-        <div class="widget-chart-sidebar bg-black-darker recs">
+        <div class="widget-chart-sidebar bg-black-darker recs rec-actions">
           <h3>Recommended Actions</h3>
           <!-- <small>Based on existing appointments and staff</small> -->
-          <div class="recommendation">
-            <input type="checkbox" name="option1" value="60">
-            <span>Move 1:00pm appointment to 2:00pm</span>
-            <div class="recommendation-impact">Impact: Schedule 1 less dental assistant</div>
-          </div>
+          <fieldset>
+            <div class="recommendation">
+              <input type="checkbox" name="option1" value="40" checked>
+              <span>Move 1:00pm appointment to 2:00pm</span>
+              <div class="recommendation-impact">Impact: Schedule 1 less dental assistant</div>
+            </div>
+            <div class="recommendation">
+              <input type="checkbox" name="option3" value="600" checked>
+              <span>Close office at 4:00pm</span>
+            </div>
 
-          <div class="recommendation">
-            <input type="checkbox" name="option3" value="600">
-            <span>Close office at 4:00pm</span>
-          </div>
+            <div class="metric pos-dollar">
+              <div class="metric-label">Revenue Improvement</div>
+              <div class="metric-value">
+                $640.00
+              </div>
+            </div>
+          </fieldset>
         </div>
       </div>
     </div>
