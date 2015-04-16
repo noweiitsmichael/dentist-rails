@@ -7,13 +7,13 @@ class PracticesController < ApplicationController
   def index
     @rev = Hyda::Revenue.new(@practice)
 
+    load_date_range
     load_summary_metrics
     load_day_to_day
     load_chart_data   
 
     js :rev_hist => @rev_chart_data
     js :production => @prod_chart_data
-
   end
 
   private
@@ -22,11 +22,39 @@ class PracticesController < ApplicationController
     @practice = Practice.last
   end
 
+  def load_date_range
+    @range = {}
+    @range[:type] = params[:range].present? ? params[:range].to_sym : :this_month
+    case @range[:type]
+    when :this_month
+      @range[:start_date] = DateTime.now.beginning_of_month
+      @range[:end_date]   = DateTime.now.end_of_month
+      @range[:interval]   = 1.month
+    when :this_week
+      @range[:start_date] = DateTime.now.beginning_of_week
+      @range[:end_date]   = DateTime.now.end_of_week
+      @range[:interval]   = 1.week
+    when :last_week
+      @range[:start_date] = (DateTime.now - 1.week).beginning_of_week
+      @range[:end_date]   = (DateTime.now - 1.week).end_of_week
+      @range[:interval]   = 1.week
+    when :last_month
+      @range[:start_date] = (DateTime.now - 1.month).beginning_of_month
+      @range[:end_date]   = (DateTime.now - 1.month).end_of_month
+      @range[:interval]   = 1.month
+    else
+      @range[:start_date] = DateTime.now.beginning_of_month
+      @range[:end_date]   = DateTime.now.end_of_month
+      @range[:interval]   = 1.month
+    end
+    @range[:to_s] = "#{@range[:start_date].strftime('%m/%d')} - #{@range[:end_date].strftime('%m/%d')}"
+  end
+
   def load_summary_metrics
-    @est_prod_this_mo = @rev.production_per(1.month, 1, DateTime.now.beginning_of_month)[0][:total_price]
-    @avg_rev_this_mo = @rev.avg_daily_revenue(DateTime.now.beginning_of_month, DateTime.now)
-    @avg_ins_ratio_this_mo = @rev.insurance_collection_ratio(DateTime.now - 90.days, DateTime.now)
-    @new_patients_this_mo = @practice.patients.new_since(DateTime.now.beginning_of_month).count
+    @est_prod_this_mo = @rev.production_per(@range[:interval] , 1, @range[:start_date])[0][:total_price]
+    @avg_rev_this_mo = @rev.avg_daily_revenue(@range[:start_date], @range[:end_date])
+    @avg_ins_ratio_this_mo = @rev.insurance_collection_ratio(@range[:end_date] - 90.days, @range[:end_date])
+    @new_patients_this_mo = @practice.patients.new_since(@range[:start_date]).count
   end
 
   def load_day_to_day

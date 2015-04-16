@@ -5,15 +5,24 @@
   <li class="active">Dashboard v2</li>
 </ol> -->
 
-<ol class="date-range breadcrumb pull-right">
-  <li><a href="javascript:;">Last Month</a></li>
-  <li><a href="javascript:;">Last Week</a></li>
-  <li><a href="javascript:;">This Week</a></li>
-  <li class="active">This Month</li>
+<ol class="breadcrumb pull-right">
+  <% [:last_month, :last_week, :this_week, :this_month].each do |r| %>
+    <% if @range[:type] == r %>
+      <li class="active"><%= r.to_s.titleize %></li>
+    <% else %>
+      <li>
+        <a href="<%= request.path %>?range=<%= r.to_s %>"><%= r.to_s.titleize %></a>
+      </li>
+    <% end %>
+  <% end %>
 </ol>
 
 <!-- begin page-header -->
-<h1 class="page-header">The Dentists At Creekside - Dashboard <small>This Month</small></h1>
+<h1 class="page-header">The Dentists At Creekside - Dashboard 
+  <small>
+    <%= "#{@range[:type].to_s.titleize} (#{@range[:to_s]})" %>
+  </small>
+</h1>
 <!-- end page-header -->
 <div class="row">
   <div class="col-md-3 col-sm-6">
@@ -108,7 +117,7 @@
     <div class="col-md-2 col-sm-4">
       <div class="widget widget-stats bg-black recommendations-day" day="<%= i %>">
         <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
-        <div class="stats-title"><%= day[:date] %></div>
+        <div class="stats-title"><%= day[:date].strftime("%^b %d") %></div>
         <div class="stats-number">
           <%= day[:date] == Date.today ? "TODAY" : day[:date].strftime("%^a") %>
         </div>
