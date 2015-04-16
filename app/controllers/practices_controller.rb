@@ -24,7 +24,7 @@ class PracticesController < ApplicationController
   private
 
   def set_practice
-    @practice = Practice.find(1)
+    @practice = Practice.last
   end
 
   def load_summary_metrics
