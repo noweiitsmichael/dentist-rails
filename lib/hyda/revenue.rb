@@ -4,7 +4,7 @@ module Hyda
       @practice = practice.instance_of?(Practice) ? practice : Practice.find(practice)
     end
 
-    def avg_daily_production(start_datetime, end_datetime)
+    def avg_daily_revenue(start_datetime, end_datetime)
       num_days      = (end_datetime.to_date - start_datetime.to_date).to_i
       total_earned  = @practice.claims.received_between(
                         start_datetime, end_datetime

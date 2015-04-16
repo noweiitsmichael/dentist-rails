@@ -5,52 +5,59 @@
   <li class="active">Dashboard v2</li>
 </ol> -->
 
+<ol class="breadcrumb pull-right">
+  <li><a href="javascript:;">Last Month</a></li>
+  <li><a href="javascript:;">Last Week</a></li>
+  <li><a href="javascript:;">This Week</a></li>
+  <li class="active">This Month</li>
+</ol>
+
 <!-- begin page-header -->
-<h1 class="page-header">Dashboard v2 <small>For Last Month</small></h1>
+<h1 class="page-header">Dashboard v2 <small>This Month</small></h1>
 <!-- end page-header -->
 <div class="row">
   <div class="col-md-3 col-sm-6">
     <div class="widget widget-stats bg-green">
       <div class="stats-icon stats-icon-lg"><i class="fa fa-globe fa-fw"></i></div>
       <div class="stats-title">ESTIMATED PRODUCTION</div>
-      <div class="stats-number">$34,105.26</div>
+      <div class="stats-number"><%= number_to_currency(@est_prod_this_mo) %></div>
       <div class="stats-progress progress">
-        <div class="progress-bar" style="width: 20.3%;"></div>
+        <div class="progress-bar" style="width: 100%;"></div>
       </div>
-      <div class="stats-desc">Worse than previous month (-$3,313.76)</div>
+      <div class="stats-desc">Worse than previous month</div>
     </div>
   </div>
   <div class="col-md-3 col-sm-6">
     <div class="widget widget-stats bg-blue">
       <div class="stats-icon stats-icon-lg"><i class="fa fa-tags fa-fw"></i></div>
-      <div class="stats-title">AVG PRODUCTION PER DAY</div>
-      <div class="stats-number">180,200</div>
+      <div class="stats-title">AVG REVENUE PER DAY</div>
+      <div class="stats-number"><%= number_to_currency(@avg_rev_this_mo) %></div>
       <div class="stats-progress progress">
-        <div class="progress-bar" style="width: 40.5%;"></div>
+        <div class="progress-bar" style="width: 100%;"></div>
       </div>
-      <div class="stats-desc">Better than last week (40.5%)</div>
+      <div class="stats-desc">Better than last month</div>
     </div>
   </div>
   <div class="col-md-3 col-sm-6">
     <div class="widget widget-stats bg-purple">
       <div class="stats-icon stats-icon-lg"><i class="fa fa-shopping-cart fa-fw"></i></div>
-      <div class="stats-title">NEW ORDERS</div>
-      <div class="stats-number">38,900</div>
+      <div class="stats-title">INSURANCE COLLECTION RATIO</div>
+      <div class="stats-number"><%= float_to_percent(@avg_ins_ratio_this_mo) %></div>
       <div class="stats-progress progress">
-        <div class="progress-bar" style="width: 76.3%;"></div>
+        <div class="progress-bar" style="width: 100%;"></div>
       </div>
-      <div class="stats-desc">Better than last week (76.3%)</div>
+      <div class="stats-desc">Worse than last month</div>
     </div>
   </div>
   <div class="col-md-3 col-sm-6">
     <div class="widget widget-stats bg-black">
       <div class="stats-icon stats-icon-lg"><i class="fa fa-comments fa-fw"></i></div>
-      <div class="stats-title">NEW COMMENTS</div>
-      <div class="stats-number">3,988</div>
+      <div class="stats-title">NEW PATIENTS</div>
+      <div class="stats-number"><%= @new_patients_this_mo %></div>
       <div class="stats-progress progress">
-        <div class="progress-bar" style="width: 54.9%;"></div>
+        <div class="progress-bar" style="width: 100%;"></div>
       </div>
-      <div class="stats-desc">Better than last week (54.9%)</div>
+      <div class="stats-desc">Better than last month</div>
     </div>
   </div>
 </div>
