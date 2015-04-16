@@ -251,6 +251,7 @@ label {
     color: #ddd;
     font-weight:300;
 }
+
 .recs .metric li {
     list-style-type: none;
 }
@@ -262,7 +263,7 @@ label {
 .recs .metric.pos-dollar .metric-value {
     font-size: 48px;
     text-transform: uppercase;
-    color: white;
+    color: #FFFFFF;
     text-align:right;
     font-weight:300;
 }
