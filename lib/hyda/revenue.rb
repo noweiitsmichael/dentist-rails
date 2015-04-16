@@ -50,13 +50,38 @@ module Hyda
         unpaid_claims = unpaid_claims_by_unit_index[i] || Claim.none
 
         revenue.push({
-          :payments      => payments.sum(&:amount).round(2) || 0.0,
-          :paid_claims   => paid_claims.sum(&:payment_price).round(2) || 0.0,
-          :unpaid_claims => unpaid_claims.sum(&:requested_price).round(2) || 0.0
+          :payments      => payments.sum(&:amount).round(2),
+          :paid_claims   => paid_claims.sum(&:payment_price).round(2),
+          :unpaid_claims => unpaid_claims.sum(&:requested_price).round(2)
         })
       end
 
       return revenue
+    end
+
+    def production_per(base_time_unit_interval, num_units, start_datetime)
+      end_datetime  = start_datetime + (num_units * base_time_unit_interval).seconds
+
+      procedures_by_unit_index = @practice.procedures.between(
+                                   start_datetime, end_datetime
+                                 ).group_by do |p|
+                                   ((p.date - start_datetime).to_i.seconds / base_time_unit_interval).to_i
+                                 end
+      
+      production = []
+      num_units.times do |i|
+        procedures = procedures_by_unit_index[i] || Procedures.none
+        total_price = procedures.sum(&:price)
+        
+        production.push({
+          :total_price => total_price.round(2),
+          :num_procedures => procedures.length,
+          :avg_price_per_procedure => (total_price / procedures.length).round(2)
+        })
+      end
+
+      pp production
+      return production
     end
   end
 end
