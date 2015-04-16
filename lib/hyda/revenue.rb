@@ -45,11 +45,13 @@ module Hyda
       
       revenue = []
       num_units.times do |i|
-        payments      = payments_by_unit_index[i] || Payment.none
+        payments      = payments_by_unit_index[i] || PatientPayment.none
         paid_claims   = paid_claims_by_unit_index[i] || Claim.none
         unpaid_claims = unpaid_claims_by_unit_index[i] || Claim.none
 
         revenue.push({
+          :start_date    => start_datetime + (i * base_time_unit_interval).seconds,
+          :end_date      => start_datetime + ((i + 1) * base_time_unit_interval).seconds, 
           :payments      => payments.sum(&:amount).round(2),
           :paid_claims   => paid_claims.sum(&:payment_price).round(2),
           :unpaid_claims => unpaid_claims.sum(&:requested_price).round(2)
@@ -70,17 +72,18 @@ module Hyda
       
       production = []
       num_units.times do |i|
-        procedures = procedures_by_unit_index[i] || Procedures.none
+        procedures = procedures_by_unit_index[i] || Procedure.none
         total_price = procedures.sum(&:price)
         
         production.push({
+          :start_date    => start_datetime + (i * base_time_unit_interval).seconds,
+          :end_date      => start_datetime + ((i + 1) * base_time_unit_interval).seconds,
           :total_price => total_price.round(2),
           :num_procedures => procedures.length,
-          :avg_price_per_procedure => (total_price / procedures.length).round(2)
+          :avg_price_per_procedure => procedures.length > 0 ? (total_price / procedures.length).round(2) : 0
         })
       end
 
-      pp production
       return production
     end
   end

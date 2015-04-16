@@ -2,6 +2,9 @@ require "time"
 
 class PracticesController < ApplicationController
   include ActionView::Helpers::NumberHelper
+  include PracticesHelper
+
+  before_filter :set_practice
 
   def index
     @revenue_data = Hyda::Revenue.new(1)
@@ -26,7 +29,19 @@ class PracticesController < ApplicationController
 
 
     # charts
+    rev = Hyda::Revenue.new(@practice)
 
+    js :rev_hist   => format_rev_line_chart_data(
+                        rev.revenue_per(1.week, 10, DateTime.now - 10.weeks)
+                      )
+    js :production => format_production_area_chart_data(
+                        rev.production_per(1.week, 10, (DateTime.now - 1.month).beginning_of_month)
+                      )
+  end
 
+  private
+
+  def set_practice
+    @practice = Practice.find(1)
   end
 end

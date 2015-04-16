@@ -3,8 +3,8 @@ $(function() {
   $(".recommendations-day").click( function() {
     $(".arrow-down").hide();
     $(this).siblings().children().show();
-    $(".rec-panel").slideUp("fast").delay( 300 );
-    $(".rec-" + $(this).attr("day")).slideDown("fast");
+    $(".rec-panel").animate({opacity: 0}, 300).hide();
+    $(".rec-" + $(this).attr("day")).animate({opacity: 1}, 300).show();
   });
 
   $(".recommendation input[type=checkbox]").click( function() {
