@@ -82,6 +82,7 @@ module OpenDental
           zipcode:          od_data['zipcode'],
           gender:           od_data['gender'],
           first_visit_date: od_data['first_visit_date'],
+          status:           od_data['status'],
           open_dental_raw:  od_data.to_json
         })
         patient.save! rescue next

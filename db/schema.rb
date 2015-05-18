@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415081707) do
+ActiveRecord::Schema.define(version: 20150517234652) do
 
   create_table "claims", force: :cascade do |t|
     t.string   "od_uid",            limit: 255
@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(version: 20150415081707) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.datetime "first_visit_date"
+    t.integer  "procedures_count", limit: 4
+    t.string   "status",           limit: 255
   end
 
   add_index "patients", ["practice_id", "od_uid"], name: "index_patients_on_practice_id_and_od_uid", using: :btree

@@ -6,6 +6,7 @@ class PracticesController < ApplicationController
 
   def index
     @rev = Hyda::Revenue.new(@practice)
+    @pat = Hyda::Patients.new(@practice)
 
     load_date_range
     load_summary_metrics
@@ -54,7 +55,7 @@ class PracticesController < ApplicationController
     @est_prod_this_mo = @rev.production_per(@range[:interval] , 1, @range[:start_date])[0][:total_price]
     @avg_rev_this_mo = @rev.avg_daily_revenue(@range[:start_date], @range[:end_date])
     @avg_ins_ratio_this_mo = @rev.insurance_collection_ratio(@range[:end_date] - 90.days, @range[:end_date])
-    @new_patients_this_mo = @practice.patients.new_since(@range[:start_date]).count
+    @new_patients_this_mo = @pat.new_between_with_completed_procedures(@range[:start_date], @range[:end_date]).count
   end
 
   def load_day_to_day

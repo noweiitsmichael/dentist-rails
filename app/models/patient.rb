@@ -6,7 +6,9 @@ class Patient < ActiveRecord::Base
 
   validates_uniqueness_of :od_uid, :scope => :practice_id
 
-  scope :new_since, lambda { |date| where("first_visit_date > ?", date) }
+  scope :new_since, lambda { |date|
+    where("first_visit_date > ?", date).where('procedures_count > ?', 1)
+  }
   scope :new_since_today, lambda {
     new_since(DateTime.now.beginning_of_day)
   }
@@ -22,4 +24,8 @@ class Patient < ActiveRecord::Base
   scope :new_between, lambda { |start_date, end_date|
     where(:first_visit_date => start_date..end_date) 
   }
+
+  def self.active_status
+    return "0"
+  end
 end

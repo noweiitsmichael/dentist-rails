@@ -9,7 +9,7 @@ namespace :import do
 
     di = OpenDental::DataImporter.new(
            practice,
-           { :verbose => true, :new_only => true }
+           { :verbose => true, :new_only => false }
          )
     di.import
   end
